@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_subdirectory(server)
 add_subdirectory(client)
 add_subdirectory(playground)
+add_subdirectory(common)
 
 
 

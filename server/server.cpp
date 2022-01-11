@@ -1,12 +1,5 @@
-
-#include <boost/asio.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/bind.hpp>
-#include <boost/lexical_cast.hpp>
-#include <iostream>
-#include <string>
+#include "../common/global.h"
+#include "../common/connection_context.h"
 
 boost::mutex global_stream_lock;
 
@@ -42,7 +35,7 @@ void worker_thread(boost::shared_ptr<boost::asio::io_service> service, int count
 void on_accept(const boost::system::error_code &error) {
     if (error) {
         global_stream_lock.lock();
-        std::cout << "On Accept Error " << error << "End.\n";
+        std::cout << "On Accept Error " << error << "\n";
         global_stream_lock.unlock();
     } else {
         global_stream_lock.lock();
@@ -72,6 +65,12 @@ int main() {
     boost::shared_ptr<boost::asio::ip::tcp::socket> socket(
             new boost::asio::ip::tcp::socket(*service)
     );
+
+    boost::shared_ptr<Connection_Context> context(
+            new Connection_Context(*service)
+            );
+
+
 
     global_stream_lock.lock();
     std::cout << "Press ENTER to exit!\n";
